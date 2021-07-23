@@ -29,7 +29,7 @@ def index():
         new_task = Todo(content=task_content)
         try:
             db.session.add(new_task)
-            # db.session.commit()
+            db.session.commit()
             return redirect("/")
         except:
             return "There is an issue"
