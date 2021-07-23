@@ -7,13 +7,15 @@
 <div class="container justify-content-center text-center py-3 my-3">
     <form action="" method="post">
         <div class="form-group">
+            {% if update_task %}
+
+            <input type="text" name="task" id="task" value="{{ update_task.content }}" class="form-control-sm">
+            <input type="submit" value="Update task" class="btn btn-info">
+            {% else %}
 
             <input type="text" name="task" id="task">
             <input type="submit" value="Add task" class="btn btn-primary" class="form-control-sm">
-
-
-
-
+            {% endif %}
         </div>
 
 
@@ -24,25 +26,40 @@
     {% if tasks %}
     <table class="table">
         <thead>
-            <tr>
+        <tr>
 
-                <th scope="col">Task</th>
-                <th scope="col">Date</th>
+            <th scope="col">Task</th>
+            <th scope="col">Date</th>
 
-                <th scope="col">Operation</th>
-            </tr>
+            <th scope="col">Operation</th>
+        </tr>
         </thead>
         <tbody>
-            {% for task in tasks %}
-            <tr>
+        {% for task in tasks %}
+        <tr>
 
-                <td>{{ task.content }}</td>
-                <td>{{ task.pub_date.date() }}</td>
+            <td>{{ task.content }}</td>
+            <td>{{ task.pub_date.date() }}</td>
+            <td>
 
-            </tr>
+                {% if update_task %}
+                {% if not update_task.id==task.id %}
+                <a href="update/{{ task.id }}" class="btn btn-info">Update</a>
+                <a href="delete/{{ task.id }}" class="btn btn-danger">Delete</a>
+                {% endif %}
+                {% else %}
+
+                <a href="update/{{ task.id }}" class="btn btn-info">Update</a>
+                <a href="delete/{{ task.id }}" class="btn btn-danger">Delete</a>
+
+                {% endif %}
 
 
-            {% endfor %}
+            </td>
+        </tr>
+
+
+        {% endfor %}
 
 
         </tbody>
@@ -50,7 +67,6 @@
     {% else %}
     <p class="text-center">There is no task !!</p>
     {% endif %}
-
 
 
 </div>
