@@ -4,9 +4,10 @@ from flask import Flask, request, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://test.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -16,6 +17,10 @@ class Todo(db.Model):
 
     def __repr__(self):
         return "<Task %r>" % self.id
+
+
+db.create_all()
+
 
 @app.route("/", methods=["POST", "GET"])
 def index():
@@ -31,3 +36,7 @@ def index():
     else:
         tasks = Todo.query.order_by(Todo.pub_date).all()
         return render_template("index.html", tasks=tasks)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
